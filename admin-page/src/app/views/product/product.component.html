@@ -1,0 +1,257 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h3><b>Sản phẩm</b></h3>
+          <div class="row" style="margin-top: 20px">
+            <form class="form-inline">
+              <div class="form-group">
+                <label for="category" class="col-md-6">Danh mục</label>
+                <div class="col-md-6">
+                  <select
+                    class="form-control"
+                    name="categoryList"
+                    id="category"
+                    (change)="getBrands($event.target.value)"
+                  >
+                    <option [value]="ca.id" *ngFor="let ca of categories">
+                      {{ ca.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="category" class="col-md-6">Nhãn hiệu</label>
+                <div class="col-md-6">
+                  <select
+                    class="form-control"
+                    name="brandList"
+                    id="brand"
+                    (change)="getProducts($event.target.value)"
+                  >
+                    <option [value]="ca.brandId" *ngFor="let ca of brands">
+                      {{ ca.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <span style="margin-left: 20px; font-style: italic; margin-top: 20px"
+          ><a (click)="openModal('', 'add')" href="javascript:;"
+            >Thêm mới</a
+          ></span
+        >
+        <div class="search-table-outter wrapper">
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Ảnh</th>
+                  <th>Tên</th>
+                  <th>Mã sản phẩm</th>
+                  <th>Giá</th>
+                  <th>Danh mục</th>
+                  <th>Mô tả</th>
+                  <th>Số lượng</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let u of products">
+                  <td style="height: 100px; width: 100px">
+                    <img
+                      *ngIf="u.images"
+                      style="width: 100%; height: 100%"
+                      [src]="u.images"
+                    />
+                  </td>
+                  <td>{{ u.nameProduct }}</td>
+                  <td>{{ u.code }}</td>
+                  <td>{{ u.price }}</td>
+                  <td>{{ u.brandName }}</td>
+                  <td>{{ u.description }}</td>
+                  <td>{{ u.totalItems }}</td>
+                  <td>
+                    <button
+                      (click)="openModal(u, 'edit')"
+                      class="btn btn-square btn-primary btn-sm"
+                    >
+                      Chỉnh sửa
+                    </button>
+                    <button
+                      (click)="remove(u)"
+                      class="btn btn-square btn-danger btn-sm"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #modalCreate="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          {{ type === "add" ? "Thêm mới" : "Chỉnh sửa" }}
+        </h4>
+        <button
+          type="button"
+          class="close"
+          (click)="modalCreate.hide()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>Mã sản phẩm</label>
+            <input
+              type="text"
+              name="code"
+              [value]="product.code"
+              [(ngModel)]="product.code"
+              class="form-control"
+              readonly
+            />
+          </div>
+          <div class="form-group">
+            <label>Tên sản phẩm</label>
+            <input
+              type="text"
+              name="name"
+              [(ngModel)]="product.nameProduct"
+              class="form-control"
+              placeholder="Tên sản phẩm"
+            />
+          </div>
+          <div class="form-group">
+            <label>Giá sản phẩm</label>
+            <input
+              class="form-control"
+              type="number"
+              [(ngModel)]="product.price"
+              name="price"
+              placeholder="Giá"
+            />
+          </div>
+          <div class="form-group">
+            <label>Mô tả</label>
+            <input
+              class="form-control"
+              type="text"
+              [(ngModel)]="product.description"
+              name="description"
+              placeholder="Mô tả"
+            />
+          </div>
+          <div class="form-group">
+            <label>Số lượng sản phẩm</label>
+            <input
+              class="form-control"
+              type="number"
+              [(ngModel)]="product.totalItems"
+              name="totalItems"
+              placeholder="Số lượng"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Thành phần</label>
+            <select
+              class="form-control"
+              name="composition"
+              [(ngModel)]="product.compositionId"
+              (change)="addComposition($event.target.value)"
+            >
+              <option [value]="ca.id" *ngFor="let ca of compositions">
+                {{ ca.name }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Nhãn hiệu</label>
+            <select
+              class="form-control"
+              name="categoryId"
+              [(ngModel)]="product.brandId"
+              (change)="changeBrand($event.target.value)"
+            >
+              <option
+                [value]="ca.brandId"
+                *ngFor="let ca of brands"
+                [selected]="ca.brandId == product.brandId"
+              >
+                {{ ca.name }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div
+              class="product-image"
+              style="width: 100px; height: 100px; border: 1px solid #5c6873"
+            >
+              <img
+                [src]="product.images"
+                style="width: 100%; height: 100%"
+                alt="Product image"
+                *ngIf="product.images"
+              />
+            </div>
+            <input
+              type="file"
+              #file
+              placeholder="Choose file"
+              (change)="uploadFile($event)"
+              style="display: none"
+            />
+            <button
+              type="button"
+              class="btn btn-success"
+              (click)="file.click()"
+              style="margin-top: 5px"
+            >
+              + Chọn ảnh
+            </button>
+            <span style="color: green">{{ uploadStatus }}</span>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-square btn-secondary"
+          (click)="modalCreate.hide()"
+        >
+          Đóng
+        </button>
+        <button
+          type="button"
+          class="btn btn-square btn-primary"
+          (click)="save()"
+        >
+          Lưu lại
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<section id="form">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 col-sm-offset-1">
+        <div class="login-form">
+          <h2>Login to your account</h2>
+          <form>
+            <input
+              type="text"
+              name="account"
+              [(ngModel)]="userLogin.username"
+              placeholder="Tài khoản"
+            />
+            <input
+              type="password"
+              name="password"
+              [(ngModel)]="userLogin.password"
+              placeholder="Mật khẩu"
+            />
+            <!--      <span>
+              <input type="checkbox" class="checkbox" />
+              Keep me signed in
+            </span> -->
+            <span style="color: red">{{ messageError }}</span>
+            <button type="button" (click)="login()" class="btn btn-default">
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="col-sm-1">
+        <h2 class="or">OR</h2>
+      </div>
+      <div class="col-sm-4">
+        <div class="signup-form">
+          <h2>New User Signup!</h2>
+          <form>
+            <input
+              type="text"
+              name="name"
+              [(ngModel)]="user.username"
+              placeholder="Name"
+            />
+            <input
+              type="email"
+              name="email"
+              [(ngModel)]="user.email"
+              placeholder="Email Address"
+            />
+            <input
+              type="password"
+              name="password"
+              [(ngModel)]="user.password"
+              placeholder="Password"
+            />
+            <button type="button" (click)="register()" class="btn btn-default">
+              Signup
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

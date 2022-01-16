@@ -1,0 +1,193 @@
+<section id="cart_items">
+  <div class="container" style="width: 85% !important">
+    <div class="breadcrumbs">
+      <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li class="active">Shopping Cart</li>
+      </ol>
+    </div>
+    <div class="table-responsive cart_info">
+      <table class="table table-condensed" *ngIf="carts.length > 0">
+        <thead>
+          <tr class="cart_menu">
+            <td class="image"></td>
+            <td class="name">Tên sản phẩm</td>
+            <td class="description">Mô tả</td>
+            <td class="price">Giá</td>
+            <td style="width: 170px" class="quantity">Số lượng</td>
+            <td style="width: 200px" class="total">Thành tiền</td>
+            <td style="width: 120px"></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let orderDetail of carts">
+            <td class="cart_product">
+              <a href=""
+                ><img
+                  style="width: 100px; height: 100px"
+                  [src]="orderDetail.product.images"
+                  alt=""
+              /></a>
+            </td>
+            <td class="cart_description">
+              <p>{{ orderDetail.product.nameProduct }}</p>
+            </td>
+            <td class="cart_description">
+              <p>{{ orderDetail.product.description }}</p>
+            </td>
+            <td class="cart_price">
+              <p>{{ orderDetail.product.price }} .đ</p>
+            </td>
+            <td class="cart_quantity">
+              <div class="cart_quantity_button">
+                <a
+                  class="cart_quantity_up"
+                  (click)="decrease(orderDetail.product)"
+                  href="javascript:;"
+                >
+                  -
+                </a>
+                <input
+                  class="cart_quantity_input"
+                  type="number"
+                  name="quantity"
+                  [value]="orderDetail.quantity"
+                  (blur)="whenBlur(orderDetail.product, $event.target)"
+                  [(ngModel)]="orderDetail.quantity"
+                  autocomplete="off"
+                  style="width: 45px"
+                  size="2"
+                />
+                <a
+                  class="cart_quantity_down"
+                  (click)="increase(orderDetail.product)"
+                  href="javascript:;"
+                >
+                  +
+                </a>
+              </div>
+            </td>
+            <td class="cart_total">
+              <p class="cart_total_price">{{ orderDetail.balance }} .đ</p>
+            </td>
+            <td class="cart_delete">
+              <a
+                class="cart_quantity_delete"
+                (click)="deleteOrderDetail(orderDetail.id)"
+                href="javascript:;"
+                ><i class="fa fa-times"></i
+              ></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table table-condensed" *ngIf="carts.length > 0">
+        <thead>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="width: 170px"></td>
+            <td style="width: 200px">
+              <b
+                ><p class="cart_total_price">{{ totalBalance }} .đ</p></b
+              >
+            </td>
+            <td style="width: 120px">
+              <button type="button" class="btn btn-success" (click)="order()">
+                Đặt hàng
+              </button>
+            </td>
+          </tr>
+        </thead>
+      </table>
+      <h2 *ngIf="carts.length <= 0">
+        Không có sản phẩm nào được lựa chọn !
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section id="do_action" *ngIf="isShowPayment">
+  <div class="container" style="width: 85% !important">
+    <div class="heading">
+      <h3>Bạn muốn lựa chọn hình thức thanh toán nào ?</h3>
+      <!-- <p>
+        Choose if you have a discount code or reward points you want to use or
+        would like to estimate your delivery cost.
+      </p> -->
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <p>Chuyển khoản</p>
+        <div class="total_area">
+          <img
+            src="../../../assets/images/payment.PNG"
+            style="width: 553px; height: 175px"
+            alt="payment"
+          />
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <p>Thanh toán khi nhận hàng</p>
+        <div class="total_area">
+          <p style="margin-left: 37px">Vui lòng nhập thông tin liên hệ.</p>
+          <form>
+            <input
+              type="text"
+              [(ngModel)]="customerInfo.userName"
+              name="name"
+              placeholder="Họ và tên"
+              (change)="changeInfo()"
+            />
+
+            <input
+              type="number"
+              name="phone"
+              [(ngModel)]="customerInfo.phoneNumber"
+              placeholder="Số điện thoại liên hệ"
+              (change)="changeInfo()"
+            />
+            <input
+              type="text"
+              name="address"
+              [(ngModel)]="customerInfo.address"
+              placeholder="Địa chỉ giao hàng."
+              (change)="changeInfo()"
+            />
+          </form>
+        </div>
+        <p style="color: red">{{ infoIsEmpty }}</p>
+      </div>
+      <button
+        type="button"
+        (click)="payment()"
+        class="btn btn-default check_out"
+      >
+        Thanh toán
+      </button>
+    </div>
+  </div>
+</section>
+<div
+  class="modal fade"
+  id="modalConfirm"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h3>{{ messageConfirm }}</h3>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 padding-right">
+        <div class="product-details">
+          <div class="col-sm-5">
+            <div class="view-product">
+              <img [src]="product.images" alt="" />
+            </div>
+            <div
+              id="similar-product"
+              class="carousel slide"
+              data-ride="carousel"
+            >
+              <a
+                class="left item-control"
+                href="#similar-product"
+                data-slide="prev"
+              >
+                <i class="fa fa-angle-left"></i>
+              </a>
+              <a
+                class="right item-control"
+                href="#similar-product"
+                data-slide="next"
+              >
+                <i class="fa fa-angle-right"></i>
+              </a>
+            </div>
+          </div>
+          <div class="col-sm-7">
+            <div class="product-information">
+              <img
+                src="./assets/images/product-details/new.jpg"
+                class="newarrival"
+                alt=""
+              />
+              <h2>{{ product.nameProduct }}</h2>
+              <p><b>Mã sản phẩm</b>: {{ product.code }}</p>
+              <p><b>Mô tả</b>: {{ product.description }}</p>
+              <p><b>Thành phần: {{product.composition}}</b></p>
+              <img src="./assets/images/product-details/rating.png" alt="" />
+              <span>
+                <span>{{ product.price }} .đ</span>
+                <label>Quantity:</label>
+                <input type="text" value="1" />
+                <button
+                  type="button"
+                  (click)="addToCart(product)"
+                  class="btn btn-fefault cart"
+                >
+                  <i class="fa fa-shopping-cart"></i>
+                  Add to cart
+                </button>
+              </span>
+              <p><b>Tình trạng:</b> Còn hàng</p>
+              <p><b>Nhãn hiệu:</b> {{ product.brandName }}</p>
+              <a href=""
+                ><img
+                  src="./assets/images/product-details/share.png"
+                  class="share img-responsive"
+                  alt=""
+              /></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,146 @@
+<header id="header">
+  <div class="header-middle">
+    <div class="container" style="width: 85% !important">
+      <div class="row">
+        <div class="col-md-4 clearfix">
+          <div class="logo pull-left">
+            <a href="javascript:;" (click)="changePage('/home')"
+              ><img src="assets/images/home/logo.png" alt=""
+            /></a>
+          </div>
+        </div>
+        <div class="col-md-8 clearfix">
+          <div class="shop-menu clearfix pull-right">
+            <ul class="nav navbar-nav">
+              <!--   <li>
+                <a href="javascript:;" (click)="changePage('/checkout')"
+                  ><i class="fa fa-crosshairs"></i> Tài khoản</a
+                >
+              </li> -->
+              <li>
+                <a href="javascript:;" (click)="changePage('/cart')"
+                  ><i class="fa fa-shopping-cart"></i>Giỏ hàng
+                </a>
+              </li>
+              <li>
+                <a
+                  *ngIf="!currentUser"
+                  href="javascript:;"
+                  (click)="changePage('/login')"
+                  ><i class="fa fa-lock"></i> Đăng nhập</a
+                >
+                <div class="dropdown" *ngIf="currentUser">
+                  <button
+                    class="btn btn-default dropdown-toggle"
+                    type="button"
+                    data-toggle="dropdown"
+                  >
+                    Xin chào,
+                    {{ currentUser.username }}
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="javascript:;" (click)="logout()">Đăng xuất</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-bottom">
+    <div class="container" style="width: 85% !important">
+      <div class="row">
+        <div class="col-sm-9">
+          <div class="navbar-header">
+            <button
+              type="button"
+              class="navbar-toggle"
+              data-toggle="collapse"
+              data-target=".navbar-collapse"
+            >
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="mainmenu pull-left">
+            <ul class="nav navbar-nav collapse navbar-collapse">
+              <li>
+                <a
+                  href="javascript:;"
+                  (click)="changePage('/home')"
+                  class="active"
+                  >Trang chủ</a
+                >
+              </li>
+              <!--  <li class="dropdown">
+               <a href="javascript:;" (click)="changePage('/products')"
+                  >Sản phẩm</a
+                >  
+                          <ul role="menu" class="sub-menu">
+                  <li>
+                    <a href="javascript:;" (click)="changePage('/products')"
+                      >Sản phẩm</a
+                    >
+                  </li>
+                  <li>
+                    <a href="javascript:;" (click)="changePage('/checkout')"
+                      >Tài khoản thanh toán</a
+                    >
+                  </li>
+                  <li>
+                    <a href="javascript:;" (click)="changePage('/cart')"
+                      >Giỏ hàng</a
+                    >
+                  </li>
+                  <li>
+                    <a href="javascript:;" (click)="changePage('/login')"
+                      >Đăng nhập</a
+                    >
+                  </li>
+                </ul>  
+              </li> -->
+              <li class="dropdown">
+                <a href="javascript:;" (click)="changePage('/blog')">Blog</a>
+                <!--  <ul role="menu" class="sub-menu">
+                  <li>
+                    <a href="javascript:;" (click)="changePage('/blog')"
+                      >Danh sách blog</a
+                    >
+                  </li>
+                  <li>
+                    <a href="javascript:;" (click)="changePage('/blog-single')"
+                      >Blog chi tiết</a
+                    >
+                  </li>
+                </ul> -->
+              </li>
+              <li>
+                <a href="javascript:;" (click)="changePage('/composition')"
+                  >Thành phần</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+<!--         <div class="col-sm-3">
+          <div class="search_box pull-right">
+            <input
+              type="text"
+              name="search"
+              [(ngModel)]="composition"
+              (keyup.enter)="search()"
+              placeholder="Tìm kiếm"
+            />
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</header>
