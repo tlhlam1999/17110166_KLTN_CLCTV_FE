@@ -13,6 +13,20 @@ export class ProductService {
     return this.apiService.getWithToken(url);
   };
 
+  searchByName = (brandId, name): Promise<Object> => {
+    return new Promise((resolve, reject) => {
+      let url = `${API_URL}products/search-by-name?brandId=${brandId}&name=${name}`;
+      this.apiService.getWithToken(url).subscribe(
+        (res) => {
+          resolve(res);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  };
+
   save = (product, type): Promise<Object> => {
     return new Promise((resolve, reject) => {
       let url = `${API_URL}products/${type}`;

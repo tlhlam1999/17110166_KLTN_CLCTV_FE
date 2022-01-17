@@ -17,8 +17,10 @@ export class CategoryComponent implements OnInit {
   category: Object = {
     name: "",
     description: "",
+    isDisabled: false,
   };
-
+  nameSearch: string = "";
+  
   constructor(
     public categoryService: CategoryService,
     public router: Router,
@@ -69,17 +71,35 @@ export class CategoryComponent implements OnInit {
     }
   };
 
-  remove = (id) => {
-    this.categoryService.remove(id).then((res) => {
-      if (res["status"] == SUCCESS_STATUS) {
-        this.toastr.success("Success", "");
-        for (let index = 0; index < this.categories.length; index++) {
-          if (this.categories[index].id == id) {
-            this.categories.splice(index, 1);
+  remove = (category) => {
+    this.categoryService
+      .save({ ...category, isDisabled: true }, "edit")
+      .then((res) => {
+        if (res["status"] == SUCCESS_STATUS) {
+          this.toastr.success("Success", "");
+          for (let index = 0; index < this.categories.length; index++) {
+            if (this.categories[index].id == category.id) {
+              this.categories.splice(index, 1);
+            }
           }
         }
-      }
-    });
+      })
+      .catch((e) => {
+        window.alert("Connection Error !");
+      });
+  };
+
+  searchCategoryByName = () => {
+    this.categoryService
+      .searchByName(this.nameSearch)
+      .then((res) => {
+        if (res["status"] == SUCCESS_STATUS) {
+          this.categories = res["data"];
+        }
+      })
+      .catch((e) => {
+        window.alert("Connection Error !");
+      });
   };
 
   openModal = (category, type) => {
@@ -90,6 +110,7 @@ export class CategoryComponent implements OnInit {
         ? { ...category }
         : {
             name: "",
+            isDisabled: false,
             description: "",
           };
     this.modalCreate.show();

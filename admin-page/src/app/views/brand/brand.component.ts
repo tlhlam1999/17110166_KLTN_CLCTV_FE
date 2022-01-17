@@ -22,7 +22,9 @@ export class BrandComponent implements OnInit {
     brandId: 0,
     categoryId: 0,
     description: "",
+    isDisabled: false,
   };
+  nameSearch: string = "";
 
   constructor(
     public brandService: BrandService,
@@ -101,19 +103,36 @@ export class BrandComponent implements OnInit {
     }
   };
 
-  remove = (id) => {
-    this.brandService.remove(id).then((res) => {
-      if (res["status"] == SUCCESS_STATUS) {
-        this.toastr.success("Success", "");
-        for (let index = 0; index < this.brands.length; index++) {
-          if (this.brands[index].brandId == id) {
-            this.brands.splice(index, 1);
+  remove = (brand) => {
+    this.brandService
+      .save({ ...brand, isDisabled: true }, "edit")
+      .then((res) => {
+        if (res["status"] == SUCCESS_STATUS) {
+          this.toastr.success("Success", "");
+          for (let index = 0; index < this.brands.length; index++) {
+            if (this.brands[index].brandId == brand.brandId) {
+              this.brands.splice(index, 1);
+            }
           }
         }
-      }
-    });
+      })
+      .catch((e) => {
+        window.alert("Connection Error !");
+      });
   };
 
+  searchBrandByName = () => {
+    this.brandService
+      .searchByName(this.categoryIdSelected, this.nameSearch)
+      .then((res) => {
+        if (res["status"] == SUCCESS_STATUS) {
+          this.brands = res["data"];
+        }
+      })
+      .catch((e) => {
+        window.alert("Connection Error !");
+      });
+  };
   openModal = (brand, type) => {
     this.messageError = "";
     this.type = type;
@@ -124,6 +143,7 @@ export class BrandComponent implements OnInit {
             name: "",
             description: "",
             categoryId: 0,
+            isDisabled: false,
           };
     this.modalCreate.show();
   };

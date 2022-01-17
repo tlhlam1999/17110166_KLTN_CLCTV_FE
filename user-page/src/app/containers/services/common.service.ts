@@ -1,13 +1,24 @@
 import { API_URL } from './../constants/config';
 import { ApiService } from './api/api.service';
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core'; 
+import * as Rx from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommonService {
+  currentUser = new Rx.Subject();
+  currentPage = new Rx.Subject();
+
   constructor(public apiService: ApiService) {}
+
+  changeData(data: any) {
+    this.currentUser.next(data);
+  }
+  
+  changePage(page: any) {
+    this.currentPage.next(page);
+  }
 
   upload = (file: any): Promise<Object> => {
     return new Promise((resolve, reject) => {
@@ -37,5 +48,4 @@ export class CommonService {
       );
     });
   };
- 
 }

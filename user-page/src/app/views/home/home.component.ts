@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   brands: any = [];
   clientIp: any = '';
   currentUser: any = {};
-  dataSearch: any = '';
+  searchObj: any = {};
   constructor(
     private homeService: HomeService,
     public httpClient: HttpClient,
@@ -30,7 +30,10 @@ export class HomeComponent implements OnInit {
     this.commonService.getClientIp().then((res: any) => {
       this.clientIp = res['ip'];
     });
-    this.dataSearch = this.storageService.get('search') || '';
+    this.searchObj = this.storageService.get('search') || {
+      key: '',
+      value: '',
+    };
   }
 
   ngOnInit(): void {
@@ -52,7 +55,7 @@ export class HomeComponent implements OnInit {
 
   getProduct = (brandId: any, indexSelected: number) => {
     this.homeService
-      .getProduct(brandId, this.dataSearch)
+      .getProduct(brandId, this.searchObj.value)
       .subscribe((res: any) => {
         if (SUCCESS_STATUS == res['status']) {
           this.setActiveForBrand(indexSelected);
