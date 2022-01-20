@@ -28,7 +28,7 @@ export class CartComponent implements OnInit {
     {
       key: 1,
       value: "Đặt hàng",
-    }, 
+    },
     {
       key: 3,
       value: "Đang chuẩn bị hàng",
@@ -47,7 +47,7 @@ export class CartComponent implements OnInit {
     public cartService: CartService,
     public router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.cartService.get().subscribe(
@@ -70,14 +70,21 @@ export class CartComponent implements OnInit {
     this.cartService.searchOrderBySdt(this.sdt).then((res) => {
       if (res["status"] == SUCCESS_STATUS) {
         this.carts = res["data"];
+        this.carts = this.carts.map((item) => {
+          item.statusName = this.getStatus(item.status);
+          return item;
+        });
       }
     });
   };
 
   getStatus = (statusKey) => {
+    if (statusKey == 6) {
+      return "Đã hủy";
+    }
     return this.statuses.find((x) => x.key == statusKey).value;
   };
- 
+
 
   cancelOrder = (cartId) => {
     this.cartService.cancelOrder(cartId).then((res) => {
